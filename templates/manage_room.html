@@ -10,7 +10,7 @@
 
     
     <h1 class="hd">Update Room</h1>
-    <form action="" method="post" class="form">
+    <form action="" method="post" class="form" id="form">
         <table class="table form-group">
             <tr>
                 <th>Room</th>
@@ -19,6 +19,10 @@
             <tr>
                 <th>Details</th>
                 <td><input type="text" class="form-control"  value="{{ data['raw'][0]['description'] }}" required name="det" id=""></td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td><input type="number" class="form-control"  value="{{ data['raw'][0]['rate'] }}" required name="rate" id=""></td>
             </tr>
     
             <tr>
@@ -32,7 +36,7 @@
     {% else %}
     
     <h1 class="hd">Manage Room</h1>
-    <form action="" method="post" class="form">
+    <form action="" method="post" class="form" id="form">
         <table class="table form-group">
             <tr>
                 <th>Room</th>
@@ -41,6 +45,10 @@
             <tr>
                 <th>Details</th>
                 <td><input type="text" class="form-control" required name="det" id=""></td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td><input type="number" class="form-control" required name="rate" id=""></td>
             </tr>
            
             <tr>
@@ -60,6 +68,7 @@
             <th>index</th>
             <th>Room</th>
             <th>Details</th>
+            <th>Price</th>
             <th></th>
             <th></th>
             
@@ -69,6 +78,7 @@
             <td>{{ loop.index }}</td>
             <td>{{ row['room'] }}</td>
             <td>{{ row['description'] }}</td>
+            <td>{{ row['rate'] }}</td>
            
             <td><a class="btn btn-info" href="?action=update&rid={{ row['room_id'] }}">Update</a></td>
             <td><a class="btn btn-danger" onclick="return confirm('Are You Sure!')" href="?action=delete&rid={{ row['room_id'] }}">Delete</a></td>

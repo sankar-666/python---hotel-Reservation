@@ -14,9 +14,10 @@ def manage_room():
     if 'btn' in request.form:
         room=request.form['room']
         det=request.form['det']
+        rate=request.form['rate']
         
     
-        q="insert into room values (null,'%s','%s')"%(room,det)
+        q="insert into room values (null,'%s','%s','%s')"%(room,det,rate)
         insert(q)
         flash("Successfully Added")
         return redirect(url_for("admin.manage_room"))
@@ -41,8 +42,9 @@ def manage_room():
         if 'update' in request.form:
             room=request.form['room']
             det=request.form['det']
+            rate=request.form['rate']
 
-            q="update room set room='%s',description='%s' where room_id='%s' "%(room,det,rid)
+            q="update room set room='%s',description='%s',rate='%s' where room_id='%s' "%(room,det,rate,rid)
             update(q)
             flash("Updated Successfully")
             return redirect(url_for("admin.manage_room"))
@@ -64,11 +66,12 @@ def manage_food():
         food=request.form['food']
         det=request.form['det']
         image=request.files['image']
+        rate=request.form['rate']
         path="static/uploads/"+str(uuid.uuid4())+image.filename
         image.save(path)
         
     
-        q="insert into food values (null,'%s','%s','%s')"%(food,det,path)
+        q="insert into food values (null,'%s','%s','%s','%s')"%(food,det,path,rate)
         insert(q)
         flash("Successfully Added")
         return redirect(url_for("admin.manage_food"))
@@ -93,14 +96,15 @@ def manage_food():
         if 'update' in request.form:
             food=request.form['food']
             det=request.form['det']
+            rate=request.form['rate']
             if request.files['image']:
                 image=request.files['image']
                 path="static/uploads/"+str(uuid.uuid4())+image.filename
                 image.save(path)
 
-                q="update food set food='%s',description='%s',image='%s' where food_id='%s' "%(food,det,path,fid)
+                q="update food set food='%s',description='%s',image='%s',rate='%s' where food_id='%s' "%(food,det,path,rate,fid)
             else:
-                q="update food set food='%s',description='%s' where food_id='%s' "%(food,det,fid)
+                q="update food set food='%s',description='%s',rate='%s' where food_id='%s' "%(food,det,rate,fid)
 
             update(q)
             flash("Updated Successfully")
@@ -239,8 +243,8 @@ def food_payment():
         q="update ordermaster set order_status='Payment Accepted' where ordermaster_id='%s'"%(bid)
         update(q)
         flash("Payment Accepted")
-        return redirect(url_for("admin.food_payment",bid=bid))
-    return render_template('food_payment.html',data=data)
+        return redirect(url_for("admin.admin_view_food_bookings"))
+    return render_template('food_payment.html',data=data,bid=bid)
 
 
 @admin.route('/room_payment')
@@ -258,4 +262,4 @@ def room_payment():
         update(q)
         flash("Payment Accepted")
         return redirect(url_for("admin.room_payment",bid=bid))
-    return render_template('room_payment.html',data=data)
+    return render_template('room_payment.html',data=data,bid=bid)

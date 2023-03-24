@@ -28,9 +28,11 @@ CREATE TABLE `booking` (
   `date` varchar(100) DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`booking_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `booking` */
+
+insert  into `booking`(`booking_id`,`user_id`,`room_id`,`amount`,`date`,`status`) values (1,1,2,'500','2023-03-25','Payment Accepted');
 
 /*Table structure for table `complaint` */
 
@@ -43,9 +45,11 @@ CREATE TABLE `complaint` (
   `reply` varchar(100) DEFAULT NULL,
   `date` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`complaint_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `complaint` */
+
+insert  into `complaint`(`complaint_id`,`user_id`,`complaint`,`reply`,`date`) values (1,1,'worst piza ever','now way','2023-03-25');
 
 /*Table structure for table `food` */
 
@@ -55,10 +59,14 @@ CREATE TABLE `food` (
   `food_id` int(11) NOT NULL AUTO_INCREMENT,
   `food` varchar(100) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
+  `image` varchar(1000) DEFAULT NULL,
+  `rate` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`food_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `food` */
+
+insert  into `food`(`food_id`,`food`,`description`,`image`,`rate`) values (2,'sweets','good for health','static/uploads/14fc45ac-aa08-433c-a5a7-1590307cce82df.jpg','500'),(3,'wheat','sample','static/uploads/7b70619c-b749-4289-9be3-e3ed5243948beeee.jpg','750'),(4,'oats','bad worst','static/uploads/4a98ffda-05f4-465c-9054-f298b2f991b9OIP.jpg','100');
 
 /*Table structure for table `login` */
 
@@ -70,9 +78,11 @@ CREATE TABLE `login` (
   `password` varchar(100) DEFAULT NULL,
   `usertype` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`login_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `login` */
+
+insert  into `login`(`login_id`,`username`,`password`,`usertype`) values (1,'admin','admin','admin'),(2,'san','san','staff'),(3,'anu','anu','user');
 
 /*Table structure for table `orderdetails` */
 
@@ -86,9 +96,11 @@ CREATE TABLE `orderdetails` (
   `total_amount` varchar(100) DEFAULT NULL,
   `orderdetails_status` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`orderdetails_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `orderdetails` */
+
+insert  into `orderdetails`(`orderdetails_id`,`ordermaster_id`,`food_id`,`quantity`,`total_amount`,`orderdetails_status`) values (1,1,2,'20','10000','pending'),(2,1,3,'10','7500','pending');
 
 /*Table structure for table `ordermaster` */
 
@@ -101,9 +113,11 @@ CREATE TABLE `ordermaster` (
   `order_date` varchar(100) DEFAULT NULL,
   `order_status` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ordermaster_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordermaster` */
+
+insert  into `ordermaster`(`ordermaster_id`,`user_id`,`totalamount`,`order_date`,`order_status`) values (1,1,'17500','2023-03-24','Payment Accepted');
 
 /*Table structure for table `payment` */
 
@@ -116,9 +130,11 @@ CREATE TABLE `payment` (
   `amount` varchar(100) DEFAULT NULL,
   `date` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`payment_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `payment` */
+
+insert  into `payment`(`payment_id`,`book_id`,`type`,`amount`,`date`) values (1,1,'food','17500','2023-03-24'),(2,1,'room','500','2023-03-25');
 
 /*Table structure for table `room` */
 
@@ -128,10 +144,13 @@ CREATE TABLE `room` (
   `room_id` int(11) NOT NULL AUTO_INCREMENT,
   `room` varchar(100) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
+  `rate` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`room_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `room` */
+
+insert  into `room`(`room_id`,`room`,`description`,`rate`) values (2,'N1','Local','500'),(3,'N3','Luxxary','100000'),(4,'PC','dormetry','850');
 
 /*Table structure for table `staff` */
 
@@ -146,9 +165,11 @@ CREATE TABLE `staff` (
   `phone` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`staff_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `staff` */
+
+insert  into `staff`(`staff_id`,`login_id`,`fname`,`lname`,`place`,`phone`,`email`) values (1,2,'san','kar','alpy','6238526459','sankar@gmail.com');
 
 /*Table structure for table `user` */
 
@@ -163,9 +184,11 @@ CREATE TABLE `user` (
   `phone` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `user` */
+
+insert  into `user`(`user_id`,`login_id`,`fname`,`lname`,`place`,`phone`,`email`) values (1,3,'anu','antony','kottayam','8547860219','anu@gmail.com');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

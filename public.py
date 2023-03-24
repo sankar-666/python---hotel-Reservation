@@ -55,8 +55,8 @@ def login():
 
 
 
-@public.route("/doctorreg",methods=['get','post'])
-def doctorreg():
+@public.route("/userreg",methods=['get','post'])
+def userreg():
     if 'btn' in request.form:
         fname=request.form['fname']
         lname=request.form['lname']
@@ -75,9 +75,9 @@ def doctorreg():
         else:
             q="insert into login values(null,'%s','%s','user')"%(uname,pwd)
             lid=insert(q)
-            q="insert into doctor values (NULL,'%s','%s','%s','%s','%s','%s')"%(lid,fname,lname,place,phone,email)
+            q="insert into user values (NULL,'%s','%s','%s','%s','%s','%s')"%(lid,fname,lname,place,phone,email)
             # print(q)
             insert(q)
             flash("Registration successfull")
             return redirect(url_for("public.login"))
-    return render_template("doctorreg.html")
+    return render_template("userreg.html")

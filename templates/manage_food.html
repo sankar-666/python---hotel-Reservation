@@ -10,7 +10,7 @@
 
     
     <h1 class="hd">Update Food</h1>
-    <form action="" method="post" class="form" enctype="multipart/form-data">
+    <form action="" id="form" method="post" class="form" enctype="multipart/form-data">
         <table class="table form-group">
             <tr>
                 <th>Room</th>
@@ -19,6 +19,10 @@
             <tr>
                 <th>Details</th>
                 <td><input type="text" class="form-control"  value="{{ data['raw'][0]['description'] }}" required name="det" id=""></td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td><input type="number" class="form-control"  value="{{ data['raw'][0]['rate'] }}" required name="rate" id=""></td>
             </tr>
             <tr>
                 <th>Image</th>
@@ -40,7 +44,7 @@
     {% else %}
     
     <h1 class="hd">Manage Food</h1>
-    <form action="" method="post" class="form" enctype="multipart/form-data">
+    <form action="" id="form" method="post" class="form" enctype="multipart/form-data">
         <table class="table form-group">
             <tr>
                 <th>Food</th>
@@ -49,6 +53,10 @@
             <tr>
                 <th>Details</th>
                 <td><input type="text" class="form-control" required name="det" id=""></td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td><input type="number" class="form-control" required name="rate" id=""></td>
             </tr>
             <tr>
                 <th>Image</th>
@@ -72,6 +80,7 @@
             <th>index</th>
             <th>Food</th>
             <th>Details</th>
+            <th>Price</th>
             <th>Image</th>
             <th></th>
             <th></th>
@@ -82,6 +91,7 @@
             <td>{{ loop.index }}</td>
             <td>{{ row['food'] }}</td>
             <td>{{ row['description'] }}</td>
+            <td>{{ row['rate'] }}</td>
             <td><img src="/{{ row['image'] }}" height="100" width="100" alt=""></td>
            
             <td><a class="btn btn-info" href="?action=update&fid={{ row['food_id'] }}">Update</a></td>
