@@ -65,13 +65,14 @@ def manage_food():
     if 'btn' in request.form:
         food=request.form['food']
         det=request.form['det']
+        quantity=request.form['quantity']
         image=request.files['image']
         rate=request.form['rate']
         path="static/uploads/"+str(uuid.uuid4())+image.filename
         image.save(path)
         
     
-        q="insert into food values (null,'%s','%s','%s','%s')"%(food,det,path,rate)
+        q="insert into food values (null,'%s','%s','%s','%s','%s')"%(food,det,path,rate,quantity)
         insert(q)
         flash("Successfully Added")
         return redirect(url_for("admin.manage_food"))
@@ -97,18 +98,19 @@ def manage_food():
             food=request.form['food']
             det=request.form['det']
             rate=request.form['rate']
+            quantity=request.form['quantity']
             if request.files['image']:
                 image=request.files['image']
                 path="static/uploads/"+str(uuid.uuid4())+image.filename
                 image.save(path)
 
-                q="update food set food='%s',description='%s',image='%s',rate='%s' where food_id='%s' "%(food,det,path,rate,fid)
+                q="update food set food='%s',description='%s',image='%s',rate='%s', quantity='%s' where food_id='%s' "%(food,det,path,rate,quantity,fid)
             else:
-                q="update food set food='%s',description='%s',rate='%s' where food_id='%s' "%(food,det,rate,fid)
+                q="update food set food='%s',description='%s',rate='%s', quantity='%s' where food_id='%s' "%(food,det,rate,quantity,fid)
 
             update(q)
             flash("Updated Successfully")
-            return redirect(url_for("admin.manage_food"))
+            return redirect(url_for("admin.manage_food"))   
     if action == "delete":
         q="delete from food where food_id='%s' "%(fid)
         delete(q)
@@ -193,6 +195,30 @@ def admin_view_room_bookings():
     data={}
     q="SELECT * FROM `booking`,`user`,`room` WHERE `booking`.`user_id`=`user`.`user_id` AND `booking`.`room_id`=`room`.`room_id`"
     data['res']=select(q)
+
+    if 'action' in request.args:
+        action=request.args['action']
+        bid=request.args['bid']
+    else:
+        action=None
+
+    if action == "accept":
+        q="update booking set status='Request Accepted' where booking_id='%s'"%(bid)
+        update(q)
+        flash("Request Accepted")
+        return redirect(url_for("admin.admin_view_room_bookings"))
+    
+    if action == "reject":
+        q="update booking set status='Rejected' where booking_id='%s'"%(bid)
+        update(q)
+        flash("Request Rejected")
+        return redirect(url_for("admin.admin_view_room_bookings"))
+
+    if action == "cancel":
+        q="delete from booking where booking_id='%s'"%(bid)
+        delete(q)
+        flash("Booking Canceled")
+        return redirect(url_for("admin.admin_view_room_bookings"))
     return render_template('admin_view_room_bookings.html',data=data)
 
 

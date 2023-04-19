@@ -14,6 +14,7 @@
   
             <th>Booking Date</th>
             <th>Status</th>
+            <th></th>
            
 
         </tr>
@@ -23,11 +24,12 @@
             <td>{{ row['description'] }}</td>
             <td>{{ row['amount'] }}</td>
             <td>{{ row['date'] }}</td>
-            {% if row['status'] == 'pending' %}
+            {% if row['status'] == 'Request Accepted' %}
             <td><a href="user_room_payment?omid={{ row['booking_id'] }}&amount={{ row['amount'] }}" class="btn btn-dark">Make Payment</a></td>
             {% else %}
             <td>{{ row['status'] }}</td>
             {% endif %}
+            <td><a onclick="return confirm('Are you Sure?')" href="?action=cancel&bid={{ row['booking_id'] }}" class="btn btn-danger">Cancel Booking</a></td>
 
 
         </tr>

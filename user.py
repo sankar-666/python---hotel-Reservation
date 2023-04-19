@@ -30,30 +30,37 @@ def add_to_cart():
     # mu=request.args['mu']
     item=request.args['item']
 
+    q="select * from food where food_id='%s'"%(iid)
+    orgstock = select(q)[0]['quantity']
+
 
     if 'btn' in request.form:
         total = request.form['total']
         rstock = request.form['rstock']
 
-        q="select * from ordermaster where order_status='pending' and user_id='%s'"%(session['uid'])
-        res=select(q)
-        if res:
-            oid=res[0]['ordermaster_id']
-        else:
-            q="insert into ordermaster values(null,'%s',0,curdate(),'pending')"%(session['uid'])
-            oid=insert(q)
-        q="select * from orderdetails where food_id='%s' and ordermaster_id='%s'"%(iid,oid)
-        val=select(q)
-        if val:
-            q="update orderdetails set quantity=quantity+'%s', total_amount=total_amount+'%s' where food_id='%s' and ordermaster_id='%s' "%(rstock,total,iid,oid)
+        if int(rstock) < int(orgstock):
+
+            q="select * from ordermaster where order_status='pending' and user_id='%s'"%(session['uid'])
+            res=select(q)
+            if res:
+                oid=res[0]['ordermaster_id']
+            else:
+                q="insert into ordermaster values(null,'%s',0,curdate(),'pending')"%(session['uid'])
+                oid=insert(q)
+            q="select * from orderdetails where food_id='%s' and ordermaster_id='%s'"%(iid,oid)
+            val=select(q)
+            if val:
+                q="update orderdetails set quantity=quantity+'%s', total_amount=total_amount+'%s' where food_id='%s' and ordermaster_id='%s' "%(rstock,total,iid,oid)
+                update(q)
+            else:
+                q="insert into orderdetails values (null,'%s','%s','%s','%s','pending')"%(oid,iid,rstock,total)
+                insert(q)
+            q="update ordermaster set totalamount=totalamount+'%s' where ordermaster_id='%s'"%(total,oid)
             update(q)
+            flash("Successfully added to Cart")
+            return redirect(url_for("user.view_food"))
         else:
-            q="insert into orderdetails values (null,'%s','%s','%s','%s','pending')"%(oid,iid,rstock,total)
-            insert(q)
-        q="update ordermaster set totalamount=totalamount+'%s' where ordermaster_id='%s'"%(total,oid)
-        update(q)
-        flash("Successfully added to Cart")
-        return redirect(url_for("user.view_food"))
+            flash("Insufficient Quantity")
 
    
     return render_template('add_to_cart.html',data=data,item=item,cp=cp)
@@ -64,7 +71,7 @@ def add_to_cart():
 @user.route('/cart')
 def cart():
     data={}
-    q="SELECT * FROM `ordermaster`,`orderdetails`,`food` WHERE `ordermaster`.`ordermaster_id`=`orderdetails`.`ordermaster_id` AND `orderdetails`.`food_id`=`food`.`food_id` AND `ordermaster`.`user_id`='%s' and order_status='pending'"%(session['uid'])
+    q="SELECT *,orderdetails.quantity as quantity FROM `ordermaster`,`orderdetails`,`food` WHERE `ordermaster`.`ordermaster_id`=`orderdetails`.`ordermaster_id` AND `orderdetails`.`food_id`=`food`.`food_id` AND `ordermaster`.`user_id`='%s' and order_status='pending'"%(session['uid'])
     data['res']=select(q)
 
     if 'action' in request.args:
@@ -76,7 +83,7 @@ def cart():
         action = None
 
     if action =="remove":
-        q="delete from orderdetails where cc_id='%s'"%(ccid)
+        q="delete from orderdetails where orderdetails_id='%s'"%(ccid)
         delete(q)
         q="update ordermaster set totalamount=totalamount-'%s' where ordermaster_id='%s'"%(price,cmid)
         update(q)
@@ -87,7 +94,21 @@ def cart():
         else:
             q="delete from ordermaster where ordermaster_id='%s'"%(cmid)
             delete(q)
-        return redirect(url_for("customer.cart"))
+        return redirect(url_for("user.cart"))
+    
+    if action == "add":
+        q="update orderdetails set quantity = quantity+1, total_amount=total_amount+'%s' where orderdetails_id='%s'"%(price,ccid)
+        update(q)
+        q="update ordermaster set totalamount=totalamount+'%s' where ordermaster_id='%s'"%(price,cmid)
+        update(q)
+        return redirect(url_for("user.cart"))
+
+    if action == "minus":
+        q="update orderdetails set quantity = quantity-1, total_amount=total_amount-'%s' where orderdetails_id='%s'"%(price,ccid)
+        update(q)
+        q="update ordermaster set totalamount=totalamount-'%s' where ordermaster_id='%s'"%(price,cmid)
+        update(q)
+        return redirect(url_for("user.cart"))
 
     return render_template('cart.html',data=data)
 
@@ -136,6 +157,18 @@ def user_room_bookings():
     data={}
     q="SELECT * FROM `booking`,`room` WHERE `booking`.`room_id`=`room`.`room_id` AND `booking`.`user_id`='%s'"%(session['uid'])
     data['res']=select(q)
+
+    if 'action' in request.args:
+        action=request.args['action']
+        bid=request.args['bid']
+    else:
+        action=None
+
+    if action == "cancel":
+        q="delete from booking where booking_id='%s'"%(bid)
+        delete(q)
+        flash("Booking Canceled")
+        return redirect(url_for("user.user_room_bookings"))
     return render_template("user_room_bookings.html",data=data)
 
 
@@ -145,25 +178,35 @@ def view_rooms():
     q="SELECT * FROM room"
     data['res']=select(q)
 
-    if 'action' in request.args:
-        action=request.args['action']
-        rid=request.args['rid']
-        rate=request.args['rate']
-    else:
-        action=None
 
-    if action == "book":
-        q="select * from booking where room_id='%s' and user_id='%s'"%(rid,session['uid'])
+    return render_template("view_rooms.html",data=data)
+
+
+@user.route('/confirm_booking',methods=['get','post'])
+def confirm_booking():
+    data={}
+    from datetime import date
+
+    # Returns the current local date
+    today = date.today()
+    print("Today date is: ", today)
+    rid=request.args['rid']
+    rate=request.args['rate']
+   
+    if 'btn' in request.form:
+        date=request.form['date']
+        days=request.form['days']
+        q="select * from booking where room_id='%s' and date='%s' "%(rid,date)
         res=select(q)
         if res:
             flash("you Have Alrady booked this room")
         else:
-            q="insert into booking values (null,'%s','%s','%s',curdate(),'pending')"%(session['uid'],rid,rate)
+            q="insert into booking values (null,'%s','%s','%s',curdate(),'%s','%s','pending')"%(session['uid'],rid,rate,date,days)
             insert(q)
             flash("Room Booked")
             return redirect(url_for("user.userhome"))
 
-    return render_template("view_rooms.html",data=data)
+    return render_template("confirm_booking.html",data=data,today=today)
 
 
 @user.route("/customer_send_complaint",methods=['get','post'])

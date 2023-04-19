@@ -17,6 +17,8 @@
             <th>Details</th>
             <th>Booking Date</th>
             <th>Status</th>
+            <th></th>
+            <th></th>
            
 
         </tr>
@@ -30,7 +32,17 @@
             <td>{{ row['description'] }}</td>
             <td>{{ row['date'] }}</td>
             <td>{{ row['status'] }}</td>
-            <td><a href="room_payment?bid={{ row['booking_id'] }}" class="btn btn-primary">View Payment</a></td>
+            {% if row['status'] == 'pending' %}
+
+            <td><a onclick="return confirm('Are you Sure?')" href="?action=accept&bid={{ row['booking_id'] }}" class="btn btn-success">Accept</a></td>
+            <td><a onclick="return confirm('Are you Sure?')" href="?action=reject&bid={{ row['booking_id'] }}" class="btn btn-danger">Reject</a></td>
+            {% else %}
+
+
+            <td><a href="room_payment?bid={{ row['booking_id'] }}" class="btn btn-warning">View Payment</a></td>
+            <td><a onclick="return confirm('Are you Sure?')" href="?action=cancel&bid={{ row['booking_id'] }}" class="btn btn-danger">Cancel Booking</a></td>
+            {% endif %}
+
       
 
       

@@ -405,16 +405,22 @@ a:hover {
           {{ row['description'] }}
           <br>
           <br>
-          Quantity: {{ row['quantity'] }}
+          <!-- Quantity:  -->
 
           <!-- <div title="You have selected this product to be shipped in the color yellow." style="top: 0" class="color yellow"></div>
           <div style="top: 43px" class="type small">XXL</div> -->
         </div>
 
         <footer class="content">
-          <!-- <span class="qt-minus">-</span>
-          <span class="qt">2</span>
-          <span class="qt-plus">+</span> -->
+          {% if row['quantity'] | int == 1 %}
+          <span class="qt">{{ row['quantity'] }}</span>
+          <span class="qt-plus"><a href="?action=add&cmid={{ row['ordermaster_id'] }}&ccid={{ row['orderdetails_id'] }}&price={{ row['rate'] }}">+</a></span>
+          {% else %}
+          <span class="qt-minus"><a href="?action=minus&cmid={{ row['ordermaster_id'] }}&ccid={{ row['orderdetails_id'] }}&price={{ row['rate'] }}">-</a></span>
+          <span class="qt">{{ row['quantity'] }}</span>
+          <span class="qt-plus"><a href="?action=add&cmid={{ row['ordermaster_id'] }}&ccid={{ row['orderdetails_id'] }}&price={{ row['rate'] }}">+</a></span>
+          {% endif %}
+ 
 
           <h2 class="full-price">
             {{ row['total_amount'] }}

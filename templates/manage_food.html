@@ -25,6 +25,10 @@
                 <td><input type="number" class="form-control"  value="{{ data['raw'][0]['rate'] }}" required name="rate" id=""></td>
             </tr>
             <tr>
+                <th>Quantity</th>
+                <td><input type="number" class="form-control" value="{{ data['raw'][0]['quantity'] }}" required name="quantity" id=""></td>
+            </tr>
+            <tr>
                 <th>Image</th>
                 <td><img src="/{{ data['raw'][0]['image'] }}" height="70" width="70"  alt=""></td>
             </tr>
@@ -59,6 +63,10 @@
                 <td><input type="number" class="form-control" required name="rate" id=""></td>
             </tr>
             <tr>
+                <th>Quantity</th>
+                <td><input type="number" class="form-control" required name="quantity" id=""></td>
+            </tr>
+            <tr>
                 <th>Image</th>
                 <td><input type="file" class="form-control" required name="image" id=""></td>
             </tr>
@@ -81,6 +89,7 @@
             <th>Food</th>
             <th>Details</th>
             <th>Price</th>
+            <th>Quantity</th>
             <th>Image</th>
             <th></th>
             <th></th>
@@ -92,6 +101,7 @@
             <td>{{ row['food'] }}</td>
             <td>{{ row['description'] }}</td>
             <td>{{ row['rate'] }}</td>
+            <td>{{ row['quantity'] }}</td>
             <td><img src="/{{ row['image'] }}" height="100" width="100" alt=""></td>
            
             <td><a class="btn btn-info" href="?action=update&fid={{ row['food_id'] }}">Update</a></td>

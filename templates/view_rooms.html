@@ -23,7 +23,7 @@
             <td>{{ row['room'] }}</td>
             <td>{{ row['description'] }}</td>
             <td>Rs. {{ row['rate'] }}/-</td>
-            <td><a onclick="return confirm('Are you Sure Book this Room')" href="?action=book&rid={{ row['room_id'] }}&rate={{ row['rate'] }}" class="btn btn-dark">Book Room</a></td>
+            <td><a onclick="return confirm('Are you Sure Book this Room')" href="confirm_booking?rid={{ row['room_id'] }}&rate={{ row['rate'] }}" class="btn btn-dark">Book Room</a></td>
 
 
 

@@ -26,13 +26,15 @@ CREATE TABLE `booking` (
   `room_id` int(11) DEFAULT NULL,
   `amount` varchar(100) DEFAULT NULL,
   `date` varchar(100) DEFAULT NULL,
+  `booking_for` varchar(100) DEFAULT NULL,
+  `no_of_days` varchar(100) DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`booking_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `booking` */
 
-insert  into `booking`(`booking_id`,`user_id`,`room_id`,`amount`,`date`,`status`) values (1,1,2,'500','2023-03-25','Payment Accepted');
+insert  into `booking`(`booking_id`,`user_id`,`room_id`,`amount`,`date`,`booking_for`,`no_of_days`,`status`) values (3,1,4,'850','2023-04-19','2023-05-10','4','pending'),(4,1,2,'500','2023-04-19','2023-04-30','5','pending');
 
 /*Table structure for table `complaint` */
 
@@ -61,12 +63,13 @@ CREATE TABLE `food` (
   `description` varchar(100) DEFAULT NULL,
   `image` varchar(1000) DEFAULT NULL,
   `rate` varchar(100) DEFAULT NULL,
+  `quantity` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`food_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `food` */
 
-insert  into `food`(`food_id`,`food`,`description`,`image`,`rate`) values (2,'sweets','good for health','static/uploads/14fc45ac-aa08-433c-a5a7-1590307cce82df.jpg','500'),(3,'wheat','sample','static/uploads/7b70619c-b749-4289-9be3-e3ed5243948beeee.jpg','750'),(4,'oats','bad worst','static/uploads/4a98ffda-05f4-465c-9054-f298b2f991b9OIP.jpg','100');
+insert  into `food`(`food_id`,`food`,`description`,`image`,`rate`,`quantity`) values (2,'sweets','good for health','static/uploads/14fc45ac-aa08-433c-a5a7-1590307cce82df.jpg','500','100'),(3,'wheat','sample','static/uploads/7b70619c-b749-4289-9be3-e3ed5243948beeee.jpg','750','50'),(4,'oats','bad worst','static/uploads/4a98ffda-05f4-465c-9054-f298b2f991b9OIP.jpg','100','70');
 
 /*Table structure for table `login` */
 
@@ -96,11 +99,9 @@ CREATE TABLE `orderdetails` (
   `total_amount` varchar(100) DEFAULT NULL,
   `orderdetails_status` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`orderdetails_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Data for the table `orderdetails` */
-
-insert  into `orderdetails`(`orderdetails_id`,`ordermaster_id`,`food_id`,`quantity`,`total_amount`,`orderdetails_status`) values (1,1,2,'20','10000','pending'),(2,1,3,'10','7500','pending');
 
 /*Table structure for table `ordermaster` */
 
@@ -113,11 +114,9 @@ CREATE TABLE `ordermaster` (
   `order_date` varchar(100) DEFAULT NULL,
   `order_status` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ordermaster_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordermaster` */
-
-insert  into `ordermaster`(`ordermaster_id`,`user_id`,`totalamount`,`order_date`,`order_status`) values (1,1,'17500','2023-03-24','Payment Accepted');
 
 /*Table structure for table `payment` */
 
@@ -130,11 +129,11 @@ CREATE TABLE `payment` (
   `amount` varchar(100) DEFAULT NULL,
   `date` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`payment_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `payment` */
 
-insert  into `payment`(`payment_id`,`book_id`,`type`,`amount`,`date`) values (1,1,'food','17500','2023-03-24'),(2,1,'room','500','2023-03-25');
+insert  into `payment`(`payment_id`,`book_id`,`type`,`amount`,`date`) values (1,1,'food','17500','2023-03-24'),(2,1,'room','500','2023-03-25'),(3,2,'room','850','2023-04-19');
 
 /*Table structure for table `room` */
 
